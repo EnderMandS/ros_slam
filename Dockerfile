@@ -34,9 +34,10 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 RUN sudo echo "source /opt/ros/noetic/setup.zsh" >> /home/$USERNAME/.zshrc
 
 # llvm clang
-RUN wget -P /home/$USERNAME/pkg/llvm https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
-    tar -xf /home/$USERNAME/pkg/llvm/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
-    sudo cp -r /home/$USERNAME/pkg/llvm/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04/* /usr && \
+WORKDIR /home/$USERNAME/pkg/llvm
+RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
+    tar -xf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
+    sudo cp -r clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04/* /usr && \
     rm -rf /home/$USERNAME/pkg/llvm
 
 # Ceres
