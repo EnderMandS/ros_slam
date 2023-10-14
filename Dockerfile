@@ -12,7 +12,7 @@ RUN sudo apt update && \
     sudo apt install -y ninja-build build-essential cmake tree curl dkms rename unzip && \
     sudo apt install -y libeigen3-dev libsuitesparse-dev libboost-all-dev libgoogle-glog-dev libgflags-dev libgtest-dev && \
     sudo apt install -y ffmpeg libpcl-dev libglew-dev libatlas-base-dev libatlas-base-dev libmetis-dev libfmt-dev && \
-    sudo apt install -y libgtk2.0-dev libtbb-dev libswscale-dev libavdevice-dev libjpeg-dev libpng-dev && \
+    sudo apt install -y libgtk2.0-dev libtbb-dev libswscale-dev libavdevice-dev libjpeg-dev libpng-dev libomp-dev && \
     sudo apt install -y ros-$ROS_DISTRO-hector-trajectory-server && \
     sudo rm -rf /var/lib/apt/lists/*
 
@@ -24,6 +24,12 @@ RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/c
     cd clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04 && \
     sudo cp -r * /usr && \
     rm -rf /home/$USERNAME/pkg/llvm
+
+# Sophus
+WORKDIR /home/$USERNAME/pkg
+RUN git clone --depth 1 https://github.com/strasdat/Sophus.git Sophus && cd Sophus && \
+    mkdir build && cd build && \
+    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean
 
 # Ceres
 WORKDIR /home/$USERNAME/pkg/ceres
@@ -48,12 +54,6 @@ RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && \
     cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x && \
     ninja && sudo ninja install && ninja clean && \
     rm -rf /home/$USERNAME/pkg/OpenCV/opencv-4.x && rm -rf /home/$USERNAME/pkg/OpenCV/opencv_contrib-4.x
-
-# Sophus
-WORKDIR /home/$USERNAME/pkg
-RUN git clone --depth 1 https://github.com/strasdat/Sophus.git Sophus && cd Sophus && \
-    mkdir build && cd build && \
-    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean
 
 WORKDIR /home/$USERNAME/
 
