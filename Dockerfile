@@ -61,7 +61,8 @@ RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && \
     mkdir -p build && cd build && \
     cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x && \
     ninja && sudo ninja install && ninja clean && \
-    rm /home/$USERNAME/pkg/OpenCV/opencv.zip && rm /home/$USERNAME/pkg/OpenCV/opencv_contrib.zip
+    rm /home/$USERNAME/pkg/OpenCV/opencv.zip && rm /home/$USERNAME/pkg/OpenCV/opencv_contrib.zip && \
+    rm -rf /home/$USERNAME/pkg/OpenCV/opencv-4.x && rm /home/$USERNAME/pkg/OpenCV/opencv_contrib-4.x
 
 WORKDIR /home/$USERNAME/
 
