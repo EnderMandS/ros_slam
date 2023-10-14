@@ -33,10 +33,16 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-syntax-highlighting
 RUN sudo echo "source /opt/ros/noetic/setup.zsh" >> /home/$USERNAME/.zshrc
 
+# llvm clang
+RUN wget -P /home/$USERNAME/pkg/llvm https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
+    tar -xf /home/$USERNAME/pkg/llvm/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
+    sudo cp -r /home/$USERNAME/pkg/llvm/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04/* /usr && \
+    rm -rf /home/$USERNAME/pkg/llvm
+
 # Ceres
 WORKDIR /home/$USERNAME/pkg/ceres
 RUN wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.2.0rc3.tar.gz && \
-    tar xvf 2.2.0rc3.tar.gz && cd ceres-solver-2.2.0rc3 && mkdir build && cd build && \
+    tar -xf 2.2.0rc3.tar.gz && cd ceres-solver-2.2.0rc3 && mkdir build && cd build && \
     cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
     rm /home/$USERNAME/pkg/ceres/2.2.0rc3.tar.gz
 
