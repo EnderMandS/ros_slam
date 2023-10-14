@@ -38,7 +38,7 @@ WORKDIR /home/$USERNAME/pkg/llvm
 RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
     tar -xf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
     rm clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
-    sudo cp -r clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04/* /usr && \
+    sudo mv -f clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04/* /usr && \
     rm -rf /home/$USERNAME/pkg/llvm
 
 # Ceres
