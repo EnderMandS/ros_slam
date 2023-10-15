@@ -50,10 +50,20 @@ RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && \
     wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.x.zip && \
     unzip opencv.zip && rm opencv.zip && \
     unzip opencv_contrib.zip && rm opencv_contrib.zip && \
-    mkdir -p build && cd build && \
+    mkdir build && cd build && \
     cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x && \
     ninja && sudo ninja install && ninja clean && \
     rm -rf /home/$USERNAME/pkg/OpenCV/opencv-4.x && rm -rf /home/$USERNAME/pkg/OpenCV/opencv_contrib-4.x
+
+# Pangolin
+WORKDIR /home/$USERNAME/pkg
+RUN git clone --recursive --depth 1 https://github.com/stevenlovegrove/Pangolin.git && cd Pangolin && \
+    sudo apt update && \
+    sudo apt install -y libgl1-mesa-dev libwayland-dev libxkbcommon-dev wayland-protocols libegl1-mesa-dev && \
+    sudo apt install -y libc++-dev libglew-dev && \
+    mkdir build && cd build && \
+    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
+    sudo rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/$USERNAME/
 
