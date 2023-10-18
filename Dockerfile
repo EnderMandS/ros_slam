@@ -31,20 +31,23 @@ RUN sudo apt update && \
 WORKDIR /home/$USERNAME/pkg
 RUN git clone --depth 1 https://github.com/strasdat/Sophus.git Sophus && cd Sophus && \
     mkdir build && cd build && \
-    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean
+    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
+    sudo ldconfig
 
 # Ceres
 WORKDIR /home/$USERNAME/pkg/ceres
 RUN wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.2.0rc3.tar.gz && \
     tar -xf 2.2.0rc3.tar.gz && rm 2.2.0rc3.tar.gz && \
     cd ceres-solver-2.2.0rc3 && mkdir build && cd build && \
-    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean
+    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
+    sudo ldconfig
 
 # g2o
 WORKDIR /home/$USERNAME/pkg
 RUN git clone --depth 1 https://github.com/RainerKuemmerle/g2o.git g2o && cd g2o && \
     mkdir build && cd build && \
-    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean
+    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
+    sudo ldconfig
 
 # # OpenCV
 # WORKDIR /home/$USERNAME/pkg/OpenCV
@@ -61,8 +64,10 @@ RUN git clone --depth 1 https://github.com/RainerKuemmerle/g2o.git g2o && cd g2o
 WORKDIR /home/$USERNAME/pkg
 RUN git clone --recursive --depth 1 https://github.com/stevenlovegrove/Pangolin.git && cd Pangolin && \
     mkdir build && cd build && \
-    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean
+    cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
+    sudo ldconfig
 
 WORKDIR /home/$USERNAME/
+RUN echo "soruce /opt/ros/${ROS_DISTRO}}/setup.zsh" >> /home/$USERNAME/.zshrc
 
 ENTRYPOINT [ "/bin/zsh" ]
