@@ -15,7 +15,7 @@ RUN sudo apt update && \
     sudo apt install -y libgtk2.0-dev libtbb-dev libswscale-dev libavdevice-dev libjpeg-dev libpng-dev libomp-dev && \
     sudo apt install -y ros-$ROS_DISTRO-hector-trajectory-server && \
     sudo apt install -y libgl1-mesa-dev libwayland-dev libxkbcommon-dev wayland-protocols libegl1-mesa-dev && \
-    sudo apt install -y libc++-dev libglew-dev libarmadillo-dev && \
+    sudo apt install -y libc++-dev libglew-dev libarmadillo-dev libvtk7-dev && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # # llvm clang
