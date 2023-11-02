@@ -68,6 +68,6 @@ RUN git clone --recursive --depth 1 https://github.com/stevenlovegrove/Pangolin.
     sudo ldconfig
 
 WORKDIR /home/$USERNAME/
-RUN echo "soruce /opt/ros/${ROS_DISTRO}}/setup.zsh" >> /home/$USERNAME/.zshrc
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.zsh" >> /home/$USERNAME/.zshrc
 
 ENTRYPOINT [ "/bin/zsh" ]
