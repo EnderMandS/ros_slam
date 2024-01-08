@@ -18,15 +18,6 @@ RUN sudo apt update && \
     sudo apt install -y libc++-dev libglew-dev libarmadillo-dev libvtk7-dev && \
     sudo rm -rf /var/lib/apt/lists/*
 
-# # llvm clang
-# WORKDIR /home/$USERNAME/pkg/llvm
-# RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
-#     tar -xf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
-#     rm clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz && \
-#     cd clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04 && \
-#     sudo cp -r * /usr && \
-#     rm -rf /home/$USERNAME/pkg/llvm
-
 # Sophus
 WORKDIR /home/$USERNAME/pkg
 RUN git clone --depth 1 https://github.com/strasdat/Sophus.git Sophus && cd Sophus && \
@@ -49,17 +40,6 @@ RUN git clone --depth 1 https://github.com/RainerKuemmerle/g2o.git g2o && cd g2o
     cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
     sudo ldconfig
 
-# # OpenCV
-# WORKDIR /home/$USERNAME/pkg/OpenCV
-# RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip && \
-#     wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.x.zip && \
-#     unzip opencv.zip && rm opencv.zip && \
-#     unzip opencv_contrib.zip && rm opencv_contrib.zip && \
-#     mkdir build && cd build && \
-#     cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x && \
-#     ninja && sudo ninja install && ninja clean && \
-#     rm -rf /home/$USERNAME/pkg/OpenCV/opencv-4.x && rm -rf /home/$USERNAME/pkg/OpenCV/opencv_contrib-4.x
-
 # Pangolin
 WORKDIR /home/$USERNAME/pkg
 RUN git clone --recursive --depth 1 https://github.com/stevenlovegrove/Pangolin.git && cd Pangolin && \
@@ -67,7 +47,10 @@ RUN git clone --recursive --depth 1 https://github.com/stevenlovegrove/Pangolin.
     cmake -G Ninja .. && ninja && sudo ninja install && ninja clean && \
     sudo ldconfig
 
-WORKDIR /home/$USERNAME/
-RUN echo "source /opt/ros/${ROS_DISTRO}/setup.zsh" >> /home/$USERNAME/.zshrc
+# Setup ROS workspace
+WORKDIR /home/$USERNAME/code/ros_ws
+RUN mkdir src && . /opt/ros/${ROS_DISTRO}/setup.sh && catkin_make && \
+    echo "source /home/$USERNAME/code/ros_ws/devel/setup.zsh" >> /home/$USERNAME/.zshrc
+COPY tasks.json /home/$USERNAME/code/ros_ws/.vscode
 
 ENTRYPOINT [ "/bin/zsh" ]
